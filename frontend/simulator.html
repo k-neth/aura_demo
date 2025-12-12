@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA - Policy Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #4F46E5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="bg-white p-2 rounded-lg">
+                        <i class="fas fa-arrow-left text-indigo-600"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-2xl font-bold">AURA - Policy Simulator</h1>
+                        <p class="text-sm text-indigo-200">Test Regulatory Changes Before Implementation</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Dashboard</a>
+                    <a href="heatmap.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Heatmap</a>
+                    <a href="simulator.html" class="px-3 py-2 rounded-lg bg-white/20">Simulator</a>
+                    <a href="sme.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">SME Monitor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Policy Impact Simulator</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Controls -->
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Policy Variable</label>
+                        <select id="policyVariable" class="w-full border rounded-lg px-4 py-2">
+                            <option value="transactionFee">Mobile Transaction Fees</option>
+                            <option value="creditLimit">Digital Credit Limits</option>
+                            <option value="kyc">KYC Requirements</option>
+                            <option value="agentCommission">Agent Commission</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Region</label>
+                        <select id="targetRegion" class="w-full border rounded-lg px-4 py-2">
+                            <option value="all">All Kenya</option>
+                            <option value="nairobi">Nairobi County</option>
+                            <option value="western">Western Region</option>
+                            <option value="coast">Coast Region</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Current Value: <span id="currentValueDisplay" class="font-bold">1.5%</span>
+                        </label>
+                        <input type="range" id="currentValue" min="0" max="5" step="0.1" value="1.5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500 mt-1">
+                            <span>0%</span>
+                            <span>2.5%</span>
+                            <span>5%</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Proposed Value: <span id="proposedValueDisplay" class="font-bold text-indigo-600">0.8%</span>
+                        </label>
+                        <input type="range" id="proposedValue" min="0" max="5" step="0.1" value="0.8" class="w-full">
+                    </div>
+
+                    <button id="runSimulation" 
+                            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 
+                                   text-white font-semibold py-3 rounded-lg transition">
+                        <i class="fas fa-play mr-2"></i>Run Simulation
+                    </button>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">💡 How It Works</h4>
+                        <p class="text-sm text-gray-600">
+                            The simulator uses historical transaction data and machine learning models 
+                            to predict the impact of policy changes on digital inclusion, transaction 
+                            volumes, and economic outcomes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="lg:col-span-2">
+                    <div id="resultsSection" class="hidden">
+                        <h3 class="text-lg font-semibold mb-4">Simulation Results</h3>
+                        
+                        <!-- Impact Cards -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div id="inclusionCard" class="bg-white border rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Digital Inclusion Change</p>
+                                        <p class="text-2xl font-bold mt-1 gradient-text">+4.2%</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-green-100">
+                                        <i class="fas fa-users text-green-600"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-2">500,000 new digital users</p>
+                            </div>
+
+                            <div id="volumeCard" class="bg-white border rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Transaction Volume</p>
+                                        <p class="text-2xl font-bold mt-1 gradient-text">+18%</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-blue-100">
+                                        <i class="fas fa-exchange-alt text-blue-600"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-2">From reduced fees</p>
+                            </div>
+
+                            <div id="revenueCard" class="bg-white border rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Govt Revenue Impact</p>
+                                        <p class="text-2xl font-bold mt-1 text-red-600">-2.1%</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-red-100">
+                                        <i class="fas fa-landmark text-red-600"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-2">Short-term decrease</p>
+                            </div>
+
+                            <div id="smeCard" class="bg-white border rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">SME Benefit</p>
+                                        <p class="text-2xl font-bold mt-1 gradient-text">+12%</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-orange-100">
+                                        <i class="fas fa-store text-orange-600"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-2">Increased digital transactions</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Chart -->
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <h4 class="font-semibold mb-3">Projected Inclusion Growth Over 12 Months</h4>
+                            <div class="h-48">
+                                <canvas id="simulationChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation -->
+                        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-indigo-800 mb-2">
+                                <i class="fas fa-lightbulb mr-2"></i>AI Recommendation
+                            </h4>
+                            <p id="recommendationText" class="text-indigo-700">
+                                Based on historical data, reducing mobile transaction fees from 1.5% to 0.8% 
+                                is projected to increase digital inclusion by 4.2% while boosting SME digital 
+                                transactions by 12%. Recommend gradual implementation over 6 months.
+                            </p>
+                            <div class="mt-3 flex space-x-3">
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm">
+                                    Export to Policy Document
+                                </button>
+                                <button class="bg-white hover:bg-gray-100 text-indigo-600 border border-indigo-600 
+                                               px-4 py-2 rounded-lg text-sm">
+                                    Share with Team
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="placeholder" class="h-full flex items-center justify-center bg-gray-50 rounded-lg p-12">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line text-gray-300 text-5xl mb-4"></i>
+                            <p class="text-gray-500">Adjust parameters and run simulation to see projected outcomes</p>
+                            <p class="text-gray-400 text-sm mt-2">Data based on 1.2B historical transactions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saved Simulations -->
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-lg font-semibold mb-4">Recent Simulations</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border rounded-lg p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Youth Credit Cap</h4>
+                                <p class="text-gray-600 text-sm">Cap digital loans at 15% APR for under-25</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">+3.8% Inclusion</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Agent Commission</h4>
+                                <p class="text-gray-600 text-sm">Increase rural agent commissions by 20%</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">+5.2% Inclusion</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">KYC Simplification</h4>
+                                <p class="text-gray-600 text-sm">Reduce ID requirements for basic accounts</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">+2.1% Inclusion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentSlider = document.getElementById('currentValue');
+            const proposedSlider = document.getElementById('proposedValue');
+            const currentDisplay = document.getElementById('currentValueDisplay');
+            const proposedDisplay = document.getElementById('proposedValueDisplay');
+            const runButton = document.getElementById('runSimulation');
+            const resultsSection = document.getElementById('resultsSection');
+            const placeholder = document.getElementById('placeholder');
+            const recommendationText = document.getElementById('recommendationText');
+
+            // Update slider displays
+            currentSlider.addEventListener('input', function() {
+                currentDisplay.textContent = this.value + '%';
+            });
+
+            proposedSlider.addEventListener('input', function() {
+                proposedDisplay.textContent = this.value + '%';
+            });
+
+            // Run simulation
+            runButton.addEventListener('click', function() {
+                const currentVal = parseFloat(currentSlider.value);
+                const proposedVal = parseFloat(proposedSlider.value);
+                const policy = document.getElementById('policyVariable').value;
+                const region = document.getElementById('targetRegion').value;
+                
+                // Calculate mock results
+                const diff = currentVal - proposedVal;
+                const inclusionChange = (diff * 2.8).toFixed(1);
+                const transactionChange = (diff * 12).toFixed(0);
+                const revenueImpact = (-diff * 1.4).toFixed(1);
+                const smeBenefit = (diff * 8).toFixed(0);
+                
+                // Update result cards
+                document.querySelector('#inclusionCard .gradient-text').textContent = `+${inclusionChange}%`;
+                document.querySelector('#inclusionCard p.text-gray-600').textContent = 
+                    `${(inclusionChange * 100000).toLocaleString()} new digital users`;
+                
+                document.querySelector('#volumeCard .gradient-text').textContent = `+${transactionChange}%`;
+                document.querySelector('#smeCard .gradient-text').textContent = `+${smeBenefit}%`;
+                document.querySelector('#revenueCard .text-red-600').textContent = `${revenueImpact}%`;
+                
+                // Update recommendation
+                const policyNames = {
+                    'transactionFee': 'mobile transaction fees',
+                    'creditLimit': 'digital credit limits',
+                    'kyc': 'KYC requirements',
+                    'agentCommission': 'agent commission rates'
+                };
+                
+                recommendationText.textContent = 
+                    `Based on historical data, reducing ${policyNames[policy]} from ${currentVal}% to ${proposedVal}% ` +
+                    `is projected to increase digital inclusion by ${inclusionChange}% in ${region}, while boosting ` +
+                    `SME digital transactions by ${smeBenefit}%. Recommend gradual implementation over 6 months.`;
+                
+                // Show results and hide placeholder
+                placeholder.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+                
+                // Update chart
+                updateChart(currentVal, proposedVal);
+            });
+
+            function updateChart(currentVal, proposedVal) {
+                const ctx = document.getElementById('simulationChart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (window.simulationChart) {
+                    window.simulationChart.destroy();
+                }
+                
+                // Generate projection data
+                const months = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'];
+                const baseline = Array(12).fill(currentVal);
+                const projection = [];
+                
+                for (let i = 0; i < 12; i++) {
+                    const progress = i / 11;
+                    const value = currentVal + (proposedVal - currentVal) * progress + (Math.random() * 0.5 - 0.25);
+                    projection.push(value);
+                }
+                
+                window.simulationChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: 'Current Policy',
+                                data: baseline,
+                                borderColor: '#9CA3AF',
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0
+                            },
+                            {
+                                label: 'Proposed Policy',
+                                data: projection,
+                                borderColor: '#4F46E5',
+                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: 'Inclusion Rate (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

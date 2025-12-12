@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA - Inclusion Heatmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .map-region {
+            position: absolute;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .map-region:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .high-inclusion { background: linear-gradient(135deg, #10b981, #059669); }
+        .medium-inclusion { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .low-inclusion { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="bg-white p-2 rounded-lg">
+                        <i class="fas fa-arrow-left text-indigo-600"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-2xl font-bold">AURA - Inclusion Heatmap</h1>
+                        <p class="text-sm text-indigo-200">Regional Digital Finance Analysis</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Dashboard</a>
+                    <a href="heatmap.html" class="px-3 py-2 rounded-lg bg-white/20">Heatmap</a>
+                    <a href="simulator.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Simulator</a>
+                    <a href="sme.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">SME Monitor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Kenya Digital Inclusion Heatmap</h2>
+                <div class="flex space-x-4">
+                    <select class="border rounded-lg px-4 py-2">
+                        <option>All Demographics</option>
+                        <option>Youth (18-35)</option>
+                        <option>Women</option>
+                        <option>SMEs</option>
+                    </select>
+                    <select class="border rounded-lg px-4 py-2">
+                        <option>All Services</option>
+                        <option>M-PESA</option>
+                        <option>Bank Apps</option>
+                        <option>Digital Credit</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Kenya Map -->
+            <div class="relative h-96 bg-gray-100 rounded-lg mb-6 overflow-hidden">
+                <!-- Simplified Kenya Map -->
+                <div class="absolute inset-0">
+                    <div class="map-region high-inclusion" style="left: 45%; top: 35%; width: 100px; height: 80px;" 
+                         data-region="nairobi" data-rate="85" data-population="4.4M">
+                        Nairobi<br>85%
+                    </div>
+                    <div class="map-region medium-inclusion" style="left: 60%; top: 60%; width: 90px; height: 70px;"
+                         data-region="mombasa" data-rate="65" data-population="1.2M">
+                        Mombasa<br>65%
+                    </div>
+                    <div class="map-region low-inclusion" style="left: 30%; top: 50%; width: 120px; height: 90px;"
+                         data-region="western" data-rate="45" data-population="2.3M">
+                        Western<br>45%
+                    </div>
+                    <div class="map-region low-inclusion" style="left: 65%; top: 20%; width: 150px; height: 110px;"
+                         data-region="northeastern" data-rate="32" data-population="1.8M">
+                        Northeastern<br>32%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex justify-center mb-8">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded bg-gradient-to-r from-red-500 to-pink-600 mr-2"></div>
+                        <span>Low Inclusion (<50%)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded bg-gradient-to-r from-yellow-500 to-amber-600 mr-2"></div>
+                        <span>Medium (50-70%)</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded bg-gradient-to-r from-green-500 to-emerald-600 mr-2"></div>
+                        <span>High (>70%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region Details -->
+            <div id="regionDetails" class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">Select a region to view details</h3>
+                <p class="text-gray-600">Click on any region on the map to see detailed inclusion data and policy recommendations.</p>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4">💡 AI Policy Recommendations</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Targeted Agent Expansion</h4>
+                        <p class="text-gray-600 text-sm">Deploy 500 new banking agents in low-inclusion regions to improve physical access points.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Digital Literacy Campaigns</h4>
+                        <p class="text-gray-600 text-sm">Launch community-based training programs focusing on women and elderly populations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const regions = document.querySelectorAll('.map-region');
+            const detailsContainer = document.getElementById('regionDetails');
+            
+            const regionData = {
+                nairobi: {
+                    name: 'Nairobi County',
+                    inclusion: '85%',
+                    barrier: 'Digital Literacy',
+                    service: 'M-PESA Lipa Na',
+                    population: '4.4M',
+                    recommendation: 'Implement digital literacy programs targeting youth and SMEs in informal settlements through partnerships with local NGOs.'
+                },
+                mombasa: {
+                    name: 'Mombasa County',
+                    inclusion: '65%',
+                    barrier: 'Agent Availability',
+                    service: 'Airtel Money',
+                    population: '1.2M',
+                    recommendation: 'Increase agent banking network by 30% in underserved coastal areas, with focus on low-income neighborhoods.'
+                },
+                western: {
+                    name: 'Western Region',
+                    inclusion: '45%',
+                    barrier: 'Network Coverage',
+                    service: 'T-Kash',
+                    population: '2.3M',
+                    recommendation: 'Partner with telecom providers to expand 4G coverage in rural areas, especially in farming communities.'
+                },
+                northeastern: {
+                    name: 'Northeastern Region',
+                    inclusion: '32%',
+                    barrier: 'Infrastructure',
+                    service: 'Bank Transfers',
+                    population: '1.8M',
+                    recommendation: 'Deploy mobile banking vans and satellite internet solutions to reach nomadic populations.'
+                }
+            };
+
+            regions.forEach(region => {
+                region.addEventListener('click', function() {
+                    const regionId = this.dataset.region;
+                    const data = regionData[regionId];
+                    
+                    detailsContainer.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-gray-500 text-sm">Inclusion Rate</p>
+                                <p class="text-3xl font-bold mt-2 gradient-text">${data.inclusion}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-gray-500 text-sm">Primary Barrier</p>
+                                <p class="text-lg font-semibold mt-2">${data.barrier}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-gray-500 text-sm">Top Service</p>
+                                <p class="text-lg font-semibold mt-2">${data.service}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-gray-500 text-sm">Population</p>
+                                <p class="text-lg font-semibold mt-2">${data.population}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg">
+                            <h4 class="font-semibold mb-2">AI Recommendation for ${data.name}</h4>
+                            <p class="text-gray-700 mb-4">${data.recommendation}</p>
+                            <div class="flex space-x-3">
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                                    Create Policy Initiative
+                                </button>
+                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                                    Export Report
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Reset all regions
+                    regions.forEach(r => {
+                        r.style.boxShadow = 'none';
+                        r.style.transform = 'scale(1)';
+                    });
+                    
+                    // Highlight selected region
+                    this.style.boxShadow = '0 0 0 3px #4F46E5';
+                    this.style.transform = 'scale(1.05)';
+                });
+            });
+            
+            // Click Nairobi by default
+            if (regions.length > 0) {
+                regions[0].click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA - SME Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .risk-low { background-color: #d1fae5; color: #065f46; }
+        .risk-medium { background-color: #fef3c7; color: #92400e; }
+        .risk-high { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <a href="index.html" class="bg-white p-2 rounded-lg">
+                        <i class="fas fa-arrow-left text-indigo-600"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-2xl font-bold">AURA - SME Financial Health Monitor</h1>
+                        <p class="text-sm text-indigo-200">Small Business Economic Analytics</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Dashboard</a>
+                    <a href="heatmap.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Heatmap</a>
+                    <a href="simulator.html" class="px-3 py-2 hover:bg-white/10 rounded-lg">Simulator</a>
+                    <a href="sme.html" class="px-3 py-2 rounded-lg bg-white/20">SME Monitor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <!-- SME Overview -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">SME Economic Dashboard</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-6 text-center">
+                        <p class="text-gray-500 text-sm">Total SMEs Tracked</p>
+                        <p class="text-3xl font-bold mt-2 gradient-text">2.1M</p>
+                        <p class="text-green-600 text-sm mt-1"><i class="fas fa-arrow-up mr-1"></i>+15% from last year</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-6 text-center">
+                        <p class="text-gray-500 text-sm">Digital Adoption</p>
+                        <p class="text-3xl font-bold mt-2 gradient-text">64%</p>
+                        <p class="text-green-600 text-sm mt-1"><i class="fas fa-arrow-up mr-1"></i>+8% from last quarter</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-6 text-center">
+                        <p class="text-gray-500 text-sm">At Risk SMEs</p>
+                        <p class="text-3xl font-bold mt-2 text-red-600">12.4%</p>
+                        <p class="text-red-600 text-sm mt-1"><i class="fas fa-arrow-down mr-1"></i>-2% from last month</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-6 text-center">
+                        <p class="text-gray-500 text-sm">Avg Monthly Revenue</p>
+                        <p class="text-3xl font-bold mt-2 gradient-text">KSh 245K</p>
+                        <p class="text-green-600 text-sm mt-1"><i class="fas fa-arrow-up mr-1"></i>+5% from last quarter</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sector Performance -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">Sector Performance Analysis</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Sector</th>
+                                <th class="py-3 px-4 text-left">Digital Growth</th>
+                                <th class="py-3 px-4 text-left">Avg Monthly Revenue</th>
+                                <th class="py-3 px-4 text-left">Transaction Frequency</th>
+                                <th class="py-3 px-4 text-left">Risk Level</th>
+                                <th class="py-3 px-4 text-left">Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium">Retail & Trade</td>
+                                <td class="py-3 px-4">
+                                    <span class="text-green-600 font-semibold">+22%</span>
+                                </td>
+                                <td class="py-3 px-4">KSh 185,000</td>
+                                <td class="py-3 px-4">84/month</td>
+                                <td class="py-3 px-4">
+                                    <span class="risk-low px-2 py-1 rounded-full text-xs">Low</span>
+                                </td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Expand digital payment incentives</td>
+                            </tr>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium">Agriculture</td>
+                                <td class="py-3 px-4">
+                                    <span class="text-yellow-600 font-semibold">+8%</span>
+                                </td>
+                                <td class="py-3 px-4">KSh 125,000</td>
+                                <td class="py-3 px-4">12/month</td>
+                                <td class="py-3 px-4">
+                                    <span class="risk-medium px-2 py-1 rounded-full text-xs">Medium</span>
+                                </td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Subsidize digital tools for farmers</td>
+                            </tr>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium">Transport</td>
+                                <td class="py-3 px-4">
+                                    <span class="text-green-600 font-semibold">+35%</span>
+                                </td>
+                                <td class="py-3 px-4">KSh 245,000</td>
+                                <td class="py-3 px-4">156/month</td>
+                                <td class="py-3 px-4">
+                                    <span class="risk-low px-2 py-1 rounded-full text-xs">Low</span>
+                                </td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Integrate with ride-hailing apps</td>
+                            </tr>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium">Manufacturing</td>
+                                <td class="py-3 px-4">
+                                    <span class="text-red-600 font-semibold">-5%</span>
+                                </td>
+                                <td class="py-3 px-4">KSh 310,000</td>
+                                <td class="py-3 px-4">45/month</td>
+                                <td class="py-3 px-4">
+                                    <span class="risk-high px-2 py-1 rounded-full text-xs">High</span>
+                                </td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Tax credits for digital adoption</td>
+                            </tr>
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium">Hospitality</td>
+                                <td class="py-3 px-4">
+                                    <span class="text-green-600 font-semibold">+15%</span>
+                                </td>
+                                <td class="py-3 px-4">KSh 195,000</td>
+                                <td class="py-3 px-4">67/month</td>
+                                <td class="py-3 px-4">
+                                    <span class="risk-medium px-2 py-1 rounded-full text-xs">Medium</span>
+                                </td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Online booking system grants</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AI Recommendations -->
+            <div>
+                <h3 class="text-xl font-semibold mb-4">🎯 AI-Generated Policy Recommendations</h3>
+                <div class="space-y-4">
+                    <div class="border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition">
+                        <div class="flex items-start">
+                            <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg mr-4">
+                                <i class="fas fa-hand-holding-usd text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-lg">Digital Tax Incentives for Manufacturing SMEs</h4>
+                                <p class="text-gray-600 mt-2">
+                                    Provide 15% tax credit for manufacturing SMEs adopting digital tools for 
+                                    inventory and payment systems. Data shows manufacturing sector declining 
+                                    in digital adoption by 5% this quarter.
+                                </p>
+                                <div class="flex items-center mt-4 space-x-6">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-800 rounded-full">
+                                        <i class="fas fa-chart-line mr-1"></i>
+                                        Expected Impact: +25% digital adoption in 6 months
+                                    </span>
+                                    <span class="text-sm px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        Timeline: Q2 2024
+                                    </span>
+                                    <span class="text-sm px-3 py-1 bg-purple-100 text-purple-800 rounded-full">
+                                        <i class="fas fa-users mr-1"></i>
+                                        12,500 SMEs affected
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ml-4 flex flex-col space-y-2">
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                                    Approve for Review
+                                </button>
+                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                                    Save for Later
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition">
+                        <div class="flex items-start">
+                            <div class="p-3 bg-green-100 text-green-600 rounded-lg mr-4">
+                                <i class="fas fa-mobile-alt text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-lg">Agent Banking Expansion in Agricultural Zones</h4>
+                                <p class="text-gray-600 mt-2">
+                                    Fund 500 new banking agents in high-potential farming regions with training 
+                                    subsidies. Agricultural SMEs show lowest transaction frequency at 12/month.
+                                </p>
+                                <div class="flex items-center mt-4 space-x-6">
+                                    <span class="text-sm px-3 py-1 bg-green-100 text-green-800 rounded-full">
+                                        <i class="fas fa-chart-line mr-1"></i>
+                                        Expected Impact: 150,000 new SME users
+                                    </span>
+                                    <span class="text-sm px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        Timeline: Q3 2024
+                                    </span>
+                                    <span class="text-sm px-3 py-1 bg-orange-100 text-orange-800 rounded-full">
+                                        <i class="fas fa-map-marker-alt mr-1"></i>
+                                        Focus: Western & Rift Valley
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ml-4 flex flex-col space-y-2">
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
+                                    Approve for Review
+                                </button>
+                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                                    Save for Later
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regional Analysis -->
+            <div class="mt-8 pt-6 border-t">
+                <h3 class="text-lg font-semibold mb-4">Regional SME Health</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Nairobi Region</h4>
+                        <p class="text-gray-600 text-sm">Strong digital adoption (78%) with high transaction volumes</p>
+                        <p class="text-green-700 font-semibold mt-2">850,000 SMEs | 3.5% growth</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-amber-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Western Region</h4>
+                        <p class="text-gray-600 text-sm">Moderate adoption (45%) with seasonal cash flow issues</p>
+                        <p class="text-yellow-700 font-semibold mt-2">420,000 SMEs | 1.2% growth</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Coast Region</h4>
+                        <p class="text-gray-600 text-sm">Tourism-dependent, high risk during off-seasons</p>
+                        <p class="text-red-700 font-semibold mt-2">280,000 SMEs | -0.8% growth</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate live data updates
+            setInterval(() => {
+                // Update SME count with slight random change
+                const smeCount = document.querySelector('.gradient-text');
+                if (smeCount) {
+                    const current = parseFloat(smeCount.textContent.replace('M', ''));
+                    const change = (Math.random() - 0.5) * 0.01;
+                    const newValue = Math.max(2.0, Math.min(2.3, current + change));
+                    smeCount.textContent = newValue.toFixed(1) + 'M';
+                }
+                
+                // Update adoption rate
+                const adoptionEl = document.querySelectorAll('.gradient-text')[1];
+                if (adoptionEl) {
+                    const current = parseFloat(adoptionEl.textContent.replace('%', ''));
+                    const change = (Math.random() - 0.5) * 0.2;
+                    const newValue = Math.max(60, Math.min(68, current + change));
+                    adoptionEl.textContent = newValue.toFixed(0) + '%';
+                }
+            }, 8000);
+        });
+    </script>
+</body>
+</html>
